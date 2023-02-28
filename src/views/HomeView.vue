@@ -1,18 +1,40 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <reactiveData></reactiveData>
+    <h2>{{ num }}</h2>
+    <button @click="addNum">++</button>
+
+    <div>{{ RMA.team }}</div>
+    <div>{{ RMA.player }}</div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import reactiveData from "@/components/reactiveData.vue";
+import { defineComponent, reactive, ref } from 'vue';
 
 export default defineComponent({
   name: 'HomeView',
-  components: {
-    HelloWorld,
+  components:{reactiveData},
+  setup(this, props, ctx) {
+
+    const num = ref(0);
+    const addNum = () => {
+      num.value++
+    }
+
+    const RMA = reactive({
+      team: "RMA",
+      player: {
+        name: "ronaldo",
+        age: 25
+      }
+    })
+
+    return {
+      num, addNum,
+      RMA
+    }
   },
 });
 </script>
