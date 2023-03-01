@@ -1,21 +1,18 @@
 <template>
   <div class="home">
+    <hookA></hookA>
     <reactiveData></reactiveData>
-    <h2>{{ num }}</h2>
-    <button @click="addNum">++</button>
-
-    <div>{{ RMA.team }}</div>
-    <div>{{ RMA.player }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import reactiveData from "@/components/reactiveData.vue";
+import hookA from "@/components/hookA.vue";
 import { defineComponent, reactive, ref } from 'vue';
 
 export default defineComponent({
   name: 'HomeView',
-  components:{reactiveData},
+  components: { reactiveData, hookA },
   setup(this, props, ctx) {
 
     const num = ref(0);

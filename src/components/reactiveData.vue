@@ -2,13 +2,20 @@
 <template>
     <div>
         响应式原理
+        <div>{{ all }}</div>
+        watch: <input type="text" ref="ipt" v-model="watchNum">
+
+
+        <div>{{ name }}:{{ age }}</div>
     </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent } from 'vue';
+import { reactive, defineComponent, computed, ref, watch, onMounted, onBeforeMount, toRefs } from 'vue';
 export default defineComponent({
-    setup() {
+
+    setup(props, context) {
+        console.log(props, context);
 
         const user = {
             name: "名字",
@@ -18,6 +25,31 @@ export default defineComponent({
                 age: 12
             }
         }
+
+        const num1 = ref(1);
+        const num2 = ref(2);
+
+
+
+        const all = computed({
+            get() {
+                return num1.value + num2.value
+            },
+            set(val) {
+                console.log("set val", val);
+
+            }
+        })
+
+
+        all.value = 5
+
+
+        const watchNum = ref(0)
+        watch(watchNum, (n, o) => {
+            console.log("改变了", n, o);
+
+        })
 
         const proxyUser = new Proxy(user, {
             get(target, prop) {
@@ -34,14 +66,31 @@ export default defineComponent({
             },
         })
 
+        onMounted(() => {
+            console.log("v3 mount");
+
+        })
+
+        onBeforeMount(() => {
+            console.log("v3 beforemount");
+        })
+
+        const state = reactive({
+            name: "自来",
+            age: 47
+        })
+        const { name, age } = toRefs(state)
 
 
-        console.log(proxyUser.name);
+        const ipt = ref<HTMLElement | null>();
+        onMounted(() => {
+            console.log(ipt.value);
+            ipt.value && ipt.value.focus()
 
-        proxyUser.name = "改了"
-        console.log(proxyUser);
+        })
 
         return {
+            all, watchNum, name, age, ipt
         };
     },
 
